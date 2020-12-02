@@ -2,37 +2,36 @@ import React, { Component } from 'react';
 
 import Header from '../Header';
 import RandomPlanet from '../RandomPlanet';
-import ItemList from '../ItemList';
-import PersonDetails from '../PersonDetails';
 
 import './app.css';
+import ErrorIndicator from '../ErrorIndicator';
+import PeoplePage from '../PeoplePage/PeoplePage';
 
 export default class App extends Component {
 
   state = {
-    selectedPerson: null
-  }
-
-  onPersonSelected = (id) => {
-    this.setState({
-      selectedPerson: id
-    });
+    hasError: false
   };
 
+
+
+  componentDidCatch() {
+    console.log('componentDidCathc()');
+    this.setState({ hasError: true });
+  }
+
   render() {
+
+    if (this.state.hasError) {
+      return <ErrorIndicator />
+    }
+
     return (
       <div>
         <Header />
         <RandomPlanet />
 
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList onPersonSelected={this.onPersonSelected} />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={this.state.selectedPerson} />
-          </div>
-        </div>
+        <PeoplePage />
       </div>
     );
   }
