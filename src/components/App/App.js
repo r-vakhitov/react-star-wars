@@ -2,12 +2,14 @@ import React, { Component } from "react";
 
 import Header from "../Header";
 import RandomPlanet from "../RandomPlanet";
+import Row from "../Row";
+import StarshipDetails from "../StarshipDetails";
 
 import "./app.css";
 import ErrorIndicator from "../ErrorIndicator";
 import PeoplePage from "../PeoplePage/PeoplePage";
 
-import PersonDetails from "../PersonDetails";
+import ItemDetails from "../ItemDetails";
 import ItemList from "../ItemList";
 import SwapiService from "../../services/swapi-service";
 
@@ -24,42 +26,37 @@ export default class App extends Component {
   }
 
   render() {
+    const {
+      getPerson,
+      getStarship,
+      getPersonImage,
+      getStarshipImage,
+    } = this.swapiService;
+
     if (this.state.hasError) {
       return <ErrorIndicator />;
     }
 
+    const personDetails = (
+      <ItemDetails
+        itemId={11}
+        getData={getPerson}
+        getImageUrl={getPersonImage}
+      />
+    );
+
+    const starshipDetails = (
+      <ItemDetails
+        itemId={5}
+        getData={getStarship}
+        getImageUrl={getStarshipImage}
+      />
+    );
+
     return (
       <div>
         <Header />
-        <RandomPlanet />
-
-        <PeoplePage />
-
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList
-              onPersonSelected={this.onPersonSelected}
-              getData={this.swapiService.getAllPlanets}
-              renderItem={(item) => item.name}
-            />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={this.state.selectedPerson} />
-          </div>
-        </div>
-
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList
-              onPersonSelected={this.onPersonSelected}
-              getData={this.swapiService.getAllStarships}
-              renderItem={(item) => item.name}
-            />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={this.state.selectedPerson} />
-          </div>
-        </div>
+        <Row left={personDetails} right={starshipDetails} />
       </div>
     );
   }

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import SwapiService from "../../services/swapi-service";
 import Spinner from "../Spinner";
 
 import "./item-list.css";
@@ -21,7 +20,7 @@ export default class ItemList extends Component {
     return items.map((item) => {
       const { id } = item;
 
-      const label = this.props.renderItem(item);
+      const label = this.props.children(item);
       return (
         <li
           className="list-group-item"
